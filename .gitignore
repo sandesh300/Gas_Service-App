@@ -1,0 +1,57 @@
+# Ignore Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore virtual environment
+venv/
+env/
+*.egg-info/
+*.eggs/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Ignore database files
+*.sqlite3
+db.sqlite3
+*.db
+
+# Ignore Django migrations
+**/migrations/*  # Except keep __init__.py files
+!**/migrations/__init__.py
+
+# Ignore media and static files
+/media/
+staticfiles/
+static/
+
+# Ignore environment variables and secrets
+.env
+*.env
+
+# Ignore IDE and editor config files
+.vscode/
+.idea/
+*.iml
+
+# Ignore logs and temp files
+*.log
+logs/
+debug.log
+*.bak
+
+# Ignore coverage and test-related files
+htmlcov/
+.coverage
+*.cover
+coverage.xml
+nosetests.xml
+tests.xml
+.pytest_cache/
+
+# Ignore deployment-related files
+Dockerfile
+docker-compose.yml
+*.pid
+celerybeat-schedule
+instance/
