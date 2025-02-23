@@ -152,9 +152,7 @@ Visit `http://127.0.0.1:8000/` in your browser to access the application.
 ![Screenshot (124)](https://github.com/user-attachments/assets/0295ce6b-40f8-4569-905e-e7bf4206672d)
 ![Screenshot (125)](https://github.com/user-attachments/assets/5ef7ee0d-1b24-43b0-8b49-ed6b96d70b31)
 
-![Screenshot (126)](https://github.com/user-attachments/assets/7da750fb-dfbc-4d3a-b310-b8c08b2df0b7)
 ![Screenshot (127)](https://github.com/user-attachments/assets/0523456e-8e56-4fda-8f82-d0888d7f0a98)
-![Screenshot (128)](https://github.com/user-attachments/assets/4b75f89f-a325-4693-8067-2f7e2f0d2cf4)
 ![Screenshot (129)](https://github.com/user-attachments/assets/7ef2280a-7e7e-49c7-bff0-878b0a5fbda3)
 ![Screenshot (130)](https://github.com/user-attachments/assets/12b77742-3166-4b9c-bba4-1a859a1cfdca)
 ![Screenshot (131)](https://github.com/user-attachments/assets/3649fef2-eced-4489-b3df-022b2d37807e)
