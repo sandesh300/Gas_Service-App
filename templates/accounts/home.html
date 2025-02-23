@@ -1,0 +1,19 @@
+<!-- templates/accounts/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Welcome - Gas Utility Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 mb-4">Welcome to Gas Utility Portal</h1>
+            <p class="lead">Manage your gas utility services efficiently and easily.</p>
+            <div class="mt-5">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg mx-2">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg mx-2">Register</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

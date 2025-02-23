@@ -1,0 +1,83 @@
+{# templates/accounts/dashboard.html #}
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Gas Utility Portal{% endblock %}
+
+{% block extra_css %}
+<!-- Ensure the static tag is loaded -->
+{% load static %}
+<!-- Link to your existing style.css -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!-- Link to FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h2>Welcome, {{ user.username }}!</h2>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Service Requests</h5>
+                <p class="card-text">View and manage your service requests.</p>
+                <a href="{% url 'service_requests:list' %}" class="btn btn-primary">View Requests</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Submit New Request</h5>
+                <p class="card-text">Create a new service request.</p>
+                <a href="{% url 'service_requests:create' %}" class="btn btn-success">New Request</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Profile</h5>
+                <p class="card-text">Update your profile information.</p>
+                <a href="{% url 'profile' %}" class="btn btn-info">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Section -->
+<footer class="footer mt-5 py-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>About Gas Utility Portal</h5>
+                <p class="text-muted">
+                    The Gas Utility Portal is a platform designed to help users manage their gas service requests efficiently.
+                    Whether you need to submit a new request, track existing ones, or update your profile, our portal provides
+                    a seamless experience. We are committed to delivering reliable and user-friendly services to our customers.
+                </p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <h5>Follow Us</h5>
+                <div class="social-links">
+                    <a href="https://facebook.com" target="_blank" class="text-decoration-none me-3">
+                        <i class="fab fa-facebook fa-2x text-primary"></i>
+                    </a>
+                    <a href="https://github.com" target="_blank" class="text-decoration-none me-3">
+                        <i class="fab fa-github fa-2x text-dark"></i>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="text-decoration-none">
+                        <i class="fab fa-youtube fa-2x text-danger"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12 text-center">
+                <p class="text-muted mb-0">&copy; 2025 Gas Utility Portal. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}
