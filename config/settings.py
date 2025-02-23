@@ -18,6 +18,8 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 # Application definition
+# config/settings.py
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,13 +30,14 @@ INSTALLED_APPS = [
     
     # Third party apps
     'crispy_forms',
+    'crispy_bootstrap5',  # Add this line
     
-    # Local apps
-    'apps.accounts',
-    'apps.service_requests',
-    'apps.tracking',
-    'apps.support_portal',
-    'apps.notifications',
+    # Local apps - update these lines
+    'apps.accounts.apps.AccountsConfig',  # Use the full path with config class
+    'apps.service_requests.apps.ServiceRequestsConfig',
+    # 'apps.tracking.apps.TrackingConfig',
+    # 'apps.support_portal.apps.SupportPortalConfig',
+    # 'apps.notifications.apps.NotificationsConfig',
 ]
 
 MIDDLEWARE = [
@@ -93,5 +96,13 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Login/Logout URLs
 LOGIN_REDIRECT_URL = 'dashboard'
-LOGOUT_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# settings.py
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
