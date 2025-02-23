@@ -1,0 +1,39 @@
+<!-- service_requests/update.html -->
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Update Service Request{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0">Update Service Request</h2>
+                    <!-- Add delete button -->
+                    <form action="{% url 'service_requests:delete' service_request.pk %}" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this request?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete Request</button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                Save Changes
+                            </button>
+                            <a href="{% url 'service_requests:detail' service_request.pk %}" 
+                               class="btn btn-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
