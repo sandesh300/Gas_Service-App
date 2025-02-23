@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}My Profile - Gas Utility Portal{% endblock %}
+
+{% block extra_css %}
+<!-- Ensure the static tag is loaded -->
+{% load static %}
+<!-- Link to your existing style.css -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!-- Link to FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h2 class="h3 mb-0">My Profile</h2>
+                </div>
+                <div class="card-body p-5">
+                    <!-- Profile Header -->
+                    <div class="row align-items-center mb-5">
+                        <div class="col-md-4 text-center">
+                            {% if user.profile.profile_picture %}
+                                <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" 
+                                     class="img-fluid rounded-circle border shadow profile-picture">
+                            {% else %}
+                                <img src="https://via.placeholder.com/150" alt="Default Profile Picture" 
+                                     class="img-fluid rounded-circle border shadow profile-picture">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <h3 class="fw-bold mb-2">{{ user.get_full_name|default:user.username }}</h3>
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-user-tag me-2"></i>
+                                <strong>Account Type:</strong> {{ user.get_user_type_display }}
+                            </p>
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                <strong>Member Since:</strong> {{ user.date_joined|date:"F j, Y" }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Profile Form -->
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-4">
+                            <!-- Personal Information Column -->
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm rounded-3">
+                                    <div class="card-body p-4">
+                                        <h4 class="fw-bold mb-4">
+                                            <i class="fas fa-user-circle me-2"></i>
+                                            Personal Information
+                                        </h4>
+                                        {{ user_form|crispy }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Profile Picture Column -->
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm rounded-3">
+                                    <div class="card-body p-4">
+                                        <h4 class="fw-bold mb-4">
+                                            <i class="fas fa-camera me-2"></i>
+                                            Profile Picture
+                                        </h4>
+                                        {{ profile_form|crispy }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Buttons -->
+                        <div class="d-flex justify-content-between mt-5">
+                            <button type="submit" class="btn btn-primary px-4 py-2">
+                                <i class="fas fa-save me-2"></i>
+                                Save Changes
+                            </button>
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary px-4 py-2">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Back to Dashboard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
