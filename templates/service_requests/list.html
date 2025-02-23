@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}My Service Requests - Gas Utility Portal{% endblock %}
+
+{% block extra_css %}
+<!-- Ensure the static tag is loaded -->
+{% load static %}
+<!-- Link to your existing style.css -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!-- Custom CSS for this page -->
+
+{% endblock %}
+
+{% block content %}
+<div class="service-requests-container">
+    <div class="container">
+        <div class="service-requests-header">
+            <h2>My Service Requests ({{ requests_count }})</h2>
+            <a href="{% url 'service_requests:create' %}" class="btn btn-primary">New Request</a>
+        </div>
+
+        {% if requests %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in requests %}
+                            <tr>
+                                <td>{{ request.title }}</td>
+                                <td>{{ request.category.name }}</td>
+                                <td>
+                                    <span class="badge bg-{% if request.status == 'pending' %}warning{% elif request.status == 'in_progress' %}info{% elif request.status == 'completed' %}success{% else %}secondary{% endif %}">
+                                        {{ request.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-{% if request.priority == 'urgent' %}danger{% elif request.priority == 'high' %}warning{% elif request.priority == 'medium' %}info{% else %}secondary{% endif %}">
+                                        {{ request.get_priority_display }}
+                                    </span>
+                                </td>
+                                <td>{{ request.created_at|date:"M d, Y" }}</td>
+                                <td>
+                                    <a href="{% url 'service_requests:detail' request.pk %}" class="btn btn-sm btn-info">View</a>
+                                    <a href="{% url 'service_requests:update' request.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if requests.has_other_pages %}
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if requests.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ requests.previous_page_number }}">Previous</a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in requests.paginator.page_range %}
+                            <li class="page-item {% if requests.number == num %}active{% endif %}">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endfor %}
+
+                        {% if requests.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ requests.next_page_number }}">Next</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        {% else %}
+            <div class="alert alert-info">
+                You haven't created any service requests yet. 
+                <a href="{% url 'service_requests:create' %}" class="alert-link">Create your first request</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
