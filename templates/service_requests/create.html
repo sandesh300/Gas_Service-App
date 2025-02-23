@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create Gas Service Request{% endblock %}
+
+{% block extra_css %}
+<!-- Ensure the static tag is loaded -->
+{% load static %}
+<!-- Link to your existing style.css -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!-- Link to FontAwesome for icons (optional) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h4 mb-0">Create Gas Service Request</h2>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Non-field errors -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        {{ formset.management_form }}
+                        
+                        <!-- Form Fields -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form.category|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.priority|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                {{ form.title|as_crispy_field }}
+                            </div>
+                            <div class="col-12">
+                                {{ form.description|as_crispy_field }}
+                            </div>
+                            <div class="col-12">
+                                {{ form.location|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form.preferred_date|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.preferred_time|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <!-- Attachments Section -->
+                        <div class="mb-4">
+                            <h4 class="mb-3">Attachments (Optional)</h4>
+                            {% for attachment_form in formset %}
+                                <div class="attachment-form mb-3 p-3 border rounded">
+                                    {{ attachment_form|crispy }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Form Buttons -->
+                        <div class="mt-4 d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Request
+                            </button>
+                            <a href="{% url 'service_requests:list' %}" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
