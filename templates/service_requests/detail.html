@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ service_request.title }} - Gas Utility Portal{% endblock %}
+
+{% block extra_css %}
+<!-- Ensure the static tag is loaded -->
+{% load static %}
+<!-- Link to your existing style.css -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!-- Link to FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Main Content Column -->
+        <div class="col-lg-8">
+            <!-- Service Request Details Card -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title mb-0">{{ service_request.title }}</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Status:</strong> 
+                        <span class="badge bg-{% if service_request.status == 'pending' %}warning{% elif service_request.status == 'in_progress' %}info{% elif service_request.status == 'completed' %}success{% else %}secondary{% endif %}">
+                            {{ service_request.get_status_display }}
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Priority:</strong>
+                        <span class="badge bg-{% if service_request.priority == 'urgent' %}danger{% elif service_request.priority == 'high' %}warning{% elif service_request.priority == 'medium' %}info{% else %}secondary{% endif %}">
+                            {{ service_request.get_priority_display }}
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Category:</strong> {{ service_request.category.name }}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Description:</strong>
+                        <p class="mt-2">{{ service_request.description }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Location:</strong> {{ service_request.location }}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Preferred Date:</strong> {{ service_request.preferred_date|default:"Not specified" }}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Preferred Time:</strong> {{ service_request.preferred_time|default:"Not specified" }}
+                    </div>
+                    <div class="mt-4">
+                        <a href="{% url 'service_requests:update' service_request.pk %}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{% url 'service_requests:delete' service_request.pk %}" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attachments Section -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h3 class="card-title mb-0">Attachments</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" action="{% url 'service_requests:add_attachment' service_request.pk %}">
+                        {% csrf_token %}
+                        {{ attachment_form|crispy }}
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paperclip"></i> Add Attachment
+                        </button>
+                    </form>
+
+                    {% if service_request.attachments.all %}
+                        <div class="mt-4">
+                            <h4>Attached Files</h4>
+                            <ul class="list-group">
+                                {% for attachment in service_request.attachments.all %}
+                                    <li class="list-group-item">
+                                        <a href="{{ attachment.file.url }}" target="_blank">{{ attachment.file.name }}</a>
+                                        <small class="text-muted d-block">{{ attachment.description }}</small>
+                                        <small class="text-muted">Uploaded: {{ attachment.uploaded_at|date:"M d, Y H:i" }}</small>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h3 class="card-title mb-0">Comments</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'service_requests:add_comment' service_request.pk %}">
+                        {% csrf_token %}
+                        {{ comment_form|crispy }}
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-comment"></i> Add Comment
+                        </button>
+                    </form>
+
+                    {% if service_request.comments.all %}
+                        <div class="mt-4">
+                            {% for comment in service_request.comments.all %}
+                                <div class="card mb-3 shadow-sm">
+                                    <div class="card-body">
+                                        <p class="card-text">{{ comment.comment }}</p>
+                                        <small class="text-muted">
+                                            By {{ comment.user.username }} on {{ comment.created_at|date:"M d, Y H:i" }}
+                                        </small>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Column -->
+        <div class="col-lg-4">
+            <!-- Sticky Timeline Card -->
+            <div class="card shadow-sm sticky-top">
+                <div class="card-header bg-success text-white">
+                    <h3 class="card-title mb-0">Request Timeline</h3>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-success"></div>
+                            <div class="timeline-content">
+                                <h4 class="timeline-title">Request Created</h4>
+                                <p>{{ service_request.created_at|date:"M d, Y H:i" }}</p>
+                            </div>
+                        </div>
+                        {% if service_request.updated_at != service_request.created_at %}
+                            <div class="timeline-item">
+                                <div class="timeline-marker bg-info"></div>
+                                <div class="timeline-content">
+                                    <h4 class="timeline-title">Last Updated</h4>
+                                    <p>{{ service_request.updated_at|date:"M d, Y H:i" }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
